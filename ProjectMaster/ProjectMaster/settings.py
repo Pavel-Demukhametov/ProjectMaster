@@ -1,15 +1,19 @@
 from pathlib import Path
 import os
+import json
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+
+with open(f"{os.path.dirname(BASE_DIR)}\config.json") as data:
+    config = json.load(data)
 
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-hw*2dajqarmt7t2j&5=(2)b)785f!c@0@r6snd#chuuwdw*$ki'
+SECRET_KEY = config["SECRET_KEY"]
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -29,6 +33,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'Users',
     'Project',
+    'API',
 ]
 
 MIDDLEWARE = [
@@ -71,7 +76,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'ProjectMaster',
         'USER': 'postgres',
-        'PASSWORD': '',
+        'PASSWORD': config["password"],
         'HOST': 'localhost',
         'PORT': '5432',
     }
