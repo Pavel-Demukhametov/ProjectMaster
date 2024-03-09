@@ -42,3 +42,9 @@ class ProjectRole(models.Model):
     project = models.ForeignKey('Project', on_delete=models.CASCADE)
     role = models.ForeignKey(Roles, on_delete=models.CASCADE)
 
+
+class Feedback(models.Model):
+    project = models.ForeignKey('Project', on_delete=models.CASCADE)
+    sender = models.ForeignKey(Supervisor, on_delete=models.DO_NOTHING)
+    timestamp = models.DateTimeField(auto_now_add=True)
+    content = models.TextField(verbose_name='Текст сообщения', blank=False)

@@ -4,8 +4,10 @@ import json
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+CONFIG_DIR = Path(__file__).resolve().parent.parent.parent
 
-with open(f"{os.path.dirname(BASE_DIR)}\config.json") as data:
+
+with open(f"{os.path.dirname(CONFIG_DIR)}\config.json") as data:
     config = json.load(data)
 
 
