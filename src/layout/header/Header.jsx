@@ -5,7 +5,7 @@ import "./Header.css"
 
 const Header = () => {
   return (
-    <header className="fixed top-0 left-0 z-10 w-full shadow-xl dark:bg-darkGray">
+    <header className="fixed top-0 left-0 z-1000 w-full shadow-xl dark:bg-darkGray">
       <div className="bg-lightHeader dark:bg-darkGray  py-3 px-7 rounded-bl-xl rounded-br-xl">
         <nav className="flex justify-between max-w-[1500px] mx-auto text-gray-900 dark:text-white">
         <Link to="/" className="flex no-underline">

@@ -43,7 +43,7 @@ const WelcomePage = () => {
                   Каталог
                 </a>
                 <div className="flex justify-between items-center gap-2">
-                    <a href="/api" className="flex-grow no-underline text-center text-3xl px-6 py-3 bg-[#89abfc] dark:bg-[#4b6cb7] hover:bg-[#4b6cb7] dark:hover:bg-[#89abfc] text-customGray dark:text-trueWhite hover:text-trueWhite dark:hover:text-customGray font-semibold rounded-md transition duration-300">
+                    <a href="/SignUp" className="flex-grow no-underline text-center text-3xl px-6 py-3 bg-[#89abfc] dark:bg-[#4b6cb7] hover:bg-[#4b6cb7] dark:hover:bg-[#89abfc] text-customGray dark:text-trueWhite hover:text-trueWhite dark:hover:text-customGray font-semibold rounded-md transition duration-300">
                         Зарегистрироваться
                     </a>
                     <a href="/api" className=" flex-grow no-underline text-center text-3xl px-6 py-3 bg-[#89abfc] dark:bg-[#4b6cb7] hover:bg-[#4b6cb7] dark:hover:bg-[#89abfc] text-customGray dark:text-trueWhite hover:text-trueWhite dark:hover:text-customGray font-semibold rounded-md transition duration-300">
