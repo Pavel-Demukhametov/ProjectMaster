@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios'; // Убедитесь, что установили axios
+import axios from 'axios'; 
+import InputField from '../../components/inputField/InputField';
+import SubmitButton from '../../components/submitButton/submitButton';
 
 
 import { useNavigate } from 'react-router-dom';
@@ -49,7 +51,7 @@ const SignUpPage = () => {
       .then(response => {
         if(response.data.success) {
           toast.success("Регистрация прошла успешно!");
-          navigate('/welcomepage'); // Используйте navigate вместо history.push
+          navigate('/welcomepage'); 
         } else {
           toast.error(response.data.message);
         }
@@ -68,26 +70,14 @@ const SignUpPage = () => {
 
         <main className="mt-[10%] w-full h-[100vh] ">
           <form className="max-w-[400px] mx-auto p-5 shadow-xl rounded-xl " onSubmit={handleSubmit}>
-            {/* Фамилия */}
-            <div className="mb-6">
-              <label htmlFor="surname" className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">Фамилия</label>
-              <input type="text" name="surname" id="surname" required onChange={handleInputChange} className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" />
-            </div>
-            {/* Имя */}
-            <div className="mb-6">
-              <label htmlFor="name" className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">Имя</label>
-              <input type="text" name="name" id="name" required onChange={handleInputChange} className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" />
-            </div>
-            {/* Отчество */}
-            <div className="mb-6">
-              <label htmlFor="patronymic" className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">Отчество</label>
-              <input type="text" name="patronymic" id="patronymic" onChange={handleInputChange} className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" />
-            </div>
-            {/* Email */}
-            <div className="mb-6">
-              <label htmlFor="email" className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">Email</label>
-              <input type="email" name="email" id="email" required onChange={handleInputChange} className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" />
-            </div>
+
+            <InputField label="Фамилия" name="surname" required value={userData.surname} onChange={handleInputChange} />
+
+            <InputField label="Имя" name="name" required value={userData.name} onChange={handleInputChange} />
+
+            <InputField label="Отчество" name="patronymic" value={userData.patronymic} onChange={handleInputChange} />
+
+            <InputField label="Email" name="email" type="email" required value={userData.email} onChange={handleInputChange} />
             {/* Направление */}
             <div className="mb-6">
               <label htmlFor="direction" className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">Направление</label>
@@ -106,13 +96,9 @@ const SignUpPage = () => {
                 ))}
               </select>
             </div>
-            {/* Пароль */}
-            <div className="mb-6">
-              <label htmlFor="password" className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">Пароль</label>
-              <input type="password" name="password" id="password" required onChange={handleInputChange} className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" />
-            </div>
-            {/* Кнопка регистрации */}
-            <button type="submit" className="w-full  bg-[#89abfc] dark:bg-[#4b6cb7] hover:bg-[#4b6cb7] dark:hover:bg-[#89abfc] text-customGray dark:text-trueWhite hover:text-trueWhite dark:hover:text-customGray font-semibold rounded-md transition duration-300 p-2.5">Зарегистрироваться</button>
+            <InputField label="Пароль" name="password" type="password" required value={userData.password} onChange={handleInputChange} />
+
+            <SubmitButton text="Зарегистрироваться" onClick={handleSubmit} />
           </form>
         </main>
       </div>
