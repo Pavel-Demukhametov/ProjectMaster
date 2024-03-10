@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import './WelcomePage.css';
 import Switcher12 from '../../components/switcher/Swither';
 import Footer from '../../layout/footer/Footer';
+import GreedBackGround from '../../components/greedBackground/GreedBackground';
 
 
 const WelcomePage = () => {
@@ -11,8 +12,10 @@ const WelcomePage = () => {
     <div className="">
       
       <div className="absolute inset-0 overflow-hidden">
-
+        <GreedBackGround className="w-full h-full min-h-screen hidden lg:block" />
       </div>
+
+
       <div className="flex justify-center min-h-screen">
         <div className="w-full max-w-[1300px] relative z-10">
           <header className="fixed top-0 right-0 z-10 w-full mt-4 ml-3">
