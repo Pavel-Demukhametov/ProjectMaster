@@ -13,7 +13,7 @@ const Header = () => {
             Project
           </p>
           <p className="text-3xl font-normal flex items-center">
-          <span className="font-bold text-transparent bg-clip-text gradient-text">Hub</span>
+          <span className="font-bold text-transparent bg-clip-text gradient-text">Master</span>
           </p>
         </Link> 
           <Switcher12  />
