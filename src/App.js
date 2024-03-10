@@ -1,8 +1,8 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Layout from './layout/Layout';
-import NotFound from './pages/notFound/NotFound';
-import WelcomePage from './pages/welcomePage/WelcomePage';
+import NotFound from './pages/notFound/NotFoundPage';
+import WelcomePage from './pages/welcome/WelcomePage';
 
 function App() {
   return (
