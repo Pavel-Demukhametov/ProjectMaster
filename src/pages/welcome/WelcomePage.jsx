@@ -31,7 +31,7 @@ const WelcomePage = () => {
           <main className="mt-[10%] w-full h-[100vh] ">
             <div className="pb-[340px] md:pb-[240px] sm:pb-[270px] flex flex-col items-center justify-center text-center sm:items-start sm:justify-start sm:text-left md:items-center md:justify-center md:text-center lg:items-start lg:justify-start lg:text-left">
               <div className="flex flex-col justify-center md:justify-center lg:justify-start">
-                <h1 className="text-6xl sm:text-[120px] md:text-[120px] font-bold text-transparent bg-clip-text gradient-text animated-gradient leading-normal">
+                <h1 className="text-5xl sm:text-[105px] md:text-[105px] font-bold text-transparent bg-clip-text gradient-text animated-gradient leading-normal">
                   ProjectMaster
                 </h1>
                 <div className="text-2xl  dark:text-trueWhite text-customGray pb-12 " style={{ maxWidth: '600px' }}>
