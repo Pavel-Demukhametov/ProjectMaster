@@ -66,7 +66,7 @@ const CreateProjectPage = () => {
         <MultiSelectDropdown label="Студенты в проекте:" name="students" options={allStudents} selectedOptions={projectData.students} handleSelectChange={handleSelectChange} />
         <MultiSelectDropdown label="Кураторы в проекте:" name="curators" options={allCurators} selectedOptions={projectData.curators} handleSelectChange={handleSelectChange} />
         <MultiSelectDropdown label="Роли в проекте:" name="roles" options={allRoles} selectedOptions={projectData.roles} handleSelectChange={handleSelectChange} />
-        <SubmitButton text="Создать проект" onClick={handleSubmit} />
+        <button type="submit" className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">Создать проект</button>
       </form>
     </div>
   );

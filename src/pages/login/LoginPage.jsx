@@ -44,7 +44,7 @@ const LoginPage = () => {
 
             <InputField label="Пароль" name="password" type="password" required value={loginData.password} onChange={handleInputChange} />
 
-            <SubmitButton text="Войти" onClick={handleSubmit} />
+            <button type="submit" className="w-full bg-[#89abfc] dark:bg-[#4b6cb7] hover:bg-[#4b6cb7] dark:hover:bg-[#89abfc] text-customGray dark:text-trueWhite hover:text-trueWhite dark:hover:text-customGray font-semibold rounded-md transition duration-300 p-2.5">Войти</button>
           </form>
         </main>
       </div>
