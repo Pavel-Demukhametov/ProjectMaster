@@ -1,6 +1,5 @@
 /** @type {import('tailwindcss').Config} */
 const plugin = require('tailwindcss/plugin');
-const scrollbar = require('tailwind-scrollbar');
 
 module.exports = {
   content: [
@@ -36,6 +35,5 @@ module.exports = {
     },
   },
   plugins: [
-    scrollbar,
   ],
 }
