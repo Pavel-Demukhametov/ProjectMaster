@@ -9,7 +9,7 @@ const Layout = () => {
         <Header />
         <main className="flex justify-center min-h-screen w-full pt-20">
           <div className="w-full max-w-[1550px] pl-5 pr-5">
-            <Outlet />
+            <Outlet /> {/* Используйте Outlet здесь */}
           </div>
         </main>
         <Footer />
