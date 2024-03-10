@@ -1,5 +1,5 @@
 import React from 'react';
-import Switcher12 from '../../components/switch/Switch';
+import Switcher12 from '../../components/switcher/Swither';
 import { Link } from 'react-router-dom';
 import "./Header.css"
 
