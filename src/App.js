@@ -5,6 +5,8 @@ import NotFound from './pages/notFound/NotFoundPage';
 import WelcomePage from './pages/welcome/WelcomePage';
 import SignUpPage from './pages/signUp/SignUpPage';
 import LoginPage from './pages/login/LoginPage';
+import CreateProjectPage from './pages/createProject/CreateProjectPage';
+import StudentsCatalogPage from './pages/studentsCatalog/StudentsCatalogPage';
 
 function App() {
   return (
@@ -16,6 +18,8 @@ function App() {
             <Route path="/" element={<Layout />}>
               <Route path="SignUp/" element={<SignUpPage />}/>
               <Route path="Login/" element={<LoginPage />}/>
+              <Route path="CreateProject/" element={<CreateProjectPage />}/>
+              <Route path="Students/" element={<StudentsCatalogPage />}/>
               <Route path="*" element={<NotFound />} />
             </Route>
           </Routes>
