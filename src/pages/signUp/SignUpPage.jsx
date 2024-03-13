@@ -2,12 +2,9 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios'; 
 import InputField from '../../components/inputField/InputField';
 import SubmitButton from '../../components/submitButton/submitButton';
-
-
 import { useNavigate } from 'react-router-dom';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-
 
 const SignUpPage = () => {
   const navigate = useNavigate();
@@ -25,42 +22,65 @@ const SignUpPage = () => {
   const [courses, setCourses] = useState([]);
 
   useEffect(() => {
-    axios.get('/api/directions').then(response => {
-      if(response.data) {
-        setDirections(response.data);
-      }
-    }).catch(error => {
-      console.error("Ошибка при получении направлений:", error);
-    });
-
-    axios.get('/api/courses').then(response => {
-      if(response.data) {
-        setCourses(response.data);
-      }
-    }).catch(error => {
-      console.error("Ошибка при получении курсов:", error);
-    });
+    axios.get('http://127.0.0.1:8000/api/registration/')
+      .then(response => {
+        if (response.data) {
+          setDirections(response.data.directions);
+          setCourses(response.data.courses);
+        }
+      }).catch(error => {
+        console.error("Ошибка при получении данных:", error);
+      });
   }, []);
 
   const handleInputChange = (e) => {
+    console.log('Field name:', e.target.name);
+    console.log('Field value:', e.target.value);
     setUserData({ ...userData, [e.target.name]: e.target.value });
   };
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    axios.post('/api/register', userData)
+  
+    // Формируем объект данных для отправки
+    const requestData = {
+      student_name: `${userData.surname} ${userData.name} ${userData.patronymic}`,
+      email: userData.email,
+      password: userData.password,
+      course: Number(userData.course),
+      direction: Number(userData.direction), 
+    };
+    console.log(requestData)
+  
+    // Отправляем POST-запрос
+    axios.post('http://127.0.0.1:8000/api/registration/', requestData)
       .then(response => {
-        if(response.data.success) {
+        if (response.status === 201) { 
           toast.success("Регистрация прошла успешно!");
-          navigate('/welcomepage'); 
+          navigate('/welcomepage');
         } else {
-          toast.error(response.data.message);
+          toast.error(response.data.message || "Ошибка регистрации");
         }
       })
       .catch(error => {
-        toast.error("Произошла ошибка при регистрации!");
-        console.error("Ошибка регистрации:", error);
+        if (error.response) {
+          let errorMessage = "Произошла ошибка при регистрации!";
+          if (error.response.data && error.response.data.email) {
+            // Предполагаем, что сообщение об ошибке находится в error.response.data.email
+            errorMessage = error.response.data.email.join(' '); // Если есть несколько сообщений, объединяем их
+          }
+          toast.error(errorMessage);
+          console.error("Ошибка регистрации:", error.response);
+        } else if (error.request) {
+          console.error("Ошибка регистрации: Нет ответа от сервера");
+          toast.error("Нет ответа от сервера");
+        } else {
+          console.error("Ошибка регистрации:", error.message);
+          toast.error("Ошибка при отправке запроса");
+        }
       });
   };
+
 
 
   return (
@@ -82,8 +102,9 @@ const SignUpPage = () => {
             <div className="mb-6">
               <label htmlFor="direction" className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">Направление</label>
               <select name="direction" id="direction" required onChange={handleInputChange} className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
-                {directions.map((direction, index) => (
-                  <option key={index} value={direction.id}>{direction.name}</option>
+              <option value="">Выберите направление</option>
+                {directions.map((direction) => (
+                  <option key={direction.id} value={direction.id}>{direction.direction_name}</option>
                 ))}
               </select>
             </div>
@@ -91,8 +112,10 @@ const SignUpPage = () => {
             <div className="mb-6">
               <label htmlFor="course" className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">Курс</label>
               <select name="course" id="course" required onChange={handleInputChange} className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
-                {courses.map((course, index) => (
-                  <option key={index} value={course.id}>{course.name}</option>
+              <option value="">Выберите курс</option>
+                {courses.map((course) => (
+                    
+                  <option key={course.id} value={course.id}>{course.course_name}</option>
                 ))}
               </select>
             </div>
