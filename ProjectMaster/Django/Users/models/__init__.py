@@ -1,6 +1,6 @@
-from .models import Role, Roles, Direction, Course
-from .student import Student, StudentRole
-from .supervisor import Supervisor
+from .models import Roles, Direction, Course
+from .users import Role, Student, Supervisor, User
+from .student import StudentRole
 
 
 __all__ = (
@@ -8,6 +8,7 @@ __all__ = (
     'Roles',
     'Direction',
     'Course',
+    'User',
     'Student',
     'Supervisor',
     'StudentRole'

@@ -1,12 +1,6 @@
 from django.db import models
 
 
-class Role(models.TextChoices):
-    """Роли пользователей"""
-    STUDENT = 'STUDENT', 'Студент'
-    SUPERVISOR = 'SUPERVISOR', 'Куратор'
-
-
 class Roles(models.Model):
     """Роли для студентов и проектов"""
     role_name = models.CharField(max_length=100)

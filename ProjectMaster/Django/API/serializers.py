@@ -1,21 +1,36 @@
 from rest_framework import serializers
-from Users.models import Student, Supervisor, Roles, Direction, Course
+from Users.models import User, Student, Supervisor, Roles, Direction, Course
 from Project.models import Project, ProjectStatus
 
 
 """ Из Users """
 
 
+class UserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ['id', 'full_name', 'email', 'password', 'role']
+
+
 class StudentSerializer(serializers.ModelSerializer):
+    full_name = serializers.CharField(source='user.full_name')
+    email = serializers.EmailField(source='user.email')
+    role = serializers.CharField(source='user.role')
+    direction = serializers.CharField(source='direction.direction_name')
+
     class Meta:
         model = Student
-        fields = '__all__'
+        fields = ['id', 'full_name', 'email', 'role', 'course', 'direction']
 
 
 class SupervisorSerializer(serializers.ModelSerializer):
+    full_name = serializers.CharField(source='user.full_name')
+    email = serializers.EmailField(source='user.email')
+    role = serializers.CharField(source='user.role')
+
     class Meta:
         model = Supervisor
-        fields = '__all__'
+        fields = ['id', 'full_name', 'email', 'role', 'job']
 
 
 class RolesSerializer(serializers.ModelSerializer):

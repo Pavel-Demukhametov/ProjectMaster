@@ -1,3 +1,5 @@
+from django.core.exceptions import ValidationError
+from django.core.validators import MinValueValidator, MaxValueValidator
 from django.db import models
 from django.utils import timezone
 from Users.models import Supervisor, Student, Roles
@@ -14,7 +16,21 @@ class Project(models.Model):
     project_name = models.CharField(max_length=255, blank=False)
     description = models.TextField(blank=True)
     created_date = models.DateTimeField(default=timezone.now)
-    status = models.ForeignKey(ProjectStatus, on_delete=models.CASCADE)
+    status = models.ForeignKey(ProjectStatus, on_delete=models.CASCADE, blank=True)
+    min_students_count = models.IntegerField(
+        blank=False,
+        validators=[MinValueValidator(0)],
+        default=0  # Не давал произвести миграцию без значения по-умолчанию
+    )
+    max_students_count = models.IntegerField(
+        blank=False,
+        validators=[MinValueValidator(1)],
+        default=1  # Не давал произвести миграцию без значения по-умолчанию
+    )
+
+    def clean(self):
+        if self.min_students_count > self.max_students_count:
+            raise ValidationError("Минимальное количество студентов не может быть больше максимального.")
 
     def __str__(self):
         return self.project_name
@@ -36,6 +52,11 @@ class ProjectSupervisor(models.Model):
 class ProjectStudent(models.Model):
     project = models.ForeignKey(Project, on_delete=models.CASCADE, blank=False)
     student = models.ForeignKey(Student, on_delete=models.CASCADE, blank=False)
+    interest = models.IntegerField(
+        validators=[MinValueValidator(0), MaxValueValidator(5)],
+        null=True,
+        blank=True
+    )
 
 
 class ProjectRole(models.Model):
