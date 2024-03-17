@@ -20,9 +20,10 @@ const LoginPage = () => {
     e.preventDefault();
     axios.post('http://127.0.0.1:8000/api/auth/login', loginData)
       .then(response => {
-        const { access, refresh } = response.data;
+        const { access, refresh, role = 'STUDENT' } = response.data;
         localStorage.setItem('accessToken', access);
         localStorage.setItem('refreshToken', refresh);
+        localStorage.setItem('userRole', role);
         toast.success("Вход выполнен успешно!");
         navigate('/welcomepage');
       })

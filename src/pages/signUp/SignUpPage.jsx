@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios'; 
+import axios from 'axios';
 import InputField from '../../components/inputField/InputField';
 import SubmitButton from '../../components/submitButton/submitButton';
 import { useNavigate } from 'react-router-dom';
@@ -40,9 +40,10 @@ const SignUpPage = () => {
   const handleLogin = (email, password) => {
     axios.post('http://127.0.0.1:8000/api/auth/login', { email, password })
       .then(response => {
-        const { access, refresh } = response.data;
+        const { access, refresh, role = 'STUDENT' } = response.data;
         localStorage.setItem('accessToken', access);
         localStorage.setItem('refreshToken', refresh);
+        localStorage.setItem('userRole', role); // Добавлено сохранение роли
         navigate('/homepage'); // Перенаправление на страницу пользователя
       })
       .catch(error => {
@@ -58,8 +59,8 @@ const SignUpPage = () => {
       email: userData.email,
       password: userData.password,
       course: Number(userData.course),
+      direction: Number(userData.direction),
 
-      direction: Number(userData.direction), 
     };
 
     axios.post('http://127.0.0.1:8000/api/registration/', requestData)
