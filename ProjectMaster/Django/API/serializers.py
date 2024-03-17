@@ -13,14 +13,13 @@ class UserSerializer(serializers.ModelSerializer):
 
 
 class StudentSerializer(serializers.ModelSerializer):
-    full_name = serializers.CharField(source='user.full_name')
-    email = serializers.EmailField(source='user.email')
-    role = serializers.CharField(source='user.role')
-    direction = serializers.CharField(source='direction.direction_name')
+    full_name = serializers.CharField(source='user.full_name', read_only=True)
+    email = serializers.EmailField(source='user.email', read_only=True)
+    role = serializers.CharField(source='user.role', read_only=True)
 
     class Meta:
         model = Student
-        fields = ['id', 'full_name', 'email', 'role', 'course', 'direction']
+        fields = ['id', 'full_name', 'email', 'role', 'course', 'direction', 'user']
 
 
 class SupervisorSerializer(serializers.ModelSerializer):
