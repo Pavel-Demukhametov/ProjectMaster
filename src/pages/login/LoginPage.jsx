@@ -4,7 +4,6 @@ import { useNavigate } from 'react-router-dom';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import InputField from '../../components/inputField/InputField';
-import SubmitButton from '../../components/submitButton/submitButton';
 
 const LoginPage = () => {
   const navigate = useNavigate();
@@ -19,14 +18,13 @@ const LoginPage = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    axios.post('/api/login', loginData)
+    axios.post('http://127.0.0.1:8000/api/auth/login', loginData)
       .then(response => {
-        if(response.data.success) {
-          toast.success("Вход выполнен успешно!");
-          navigate('/welcomepage');
-        } else {
-          toast.error(response.data.message);
-        }
+        const { access, refresh } = response.data;
+        localStorage.setItem('accessToken', access);
+        localStorage.setItem('refreshToken', refresh);
+        toast.success("Вход выполнен успешно!");
+        navigate('/welcomepage');
       })
       .catch(error => {
         toast.error("Произошла ошибка при входе!");

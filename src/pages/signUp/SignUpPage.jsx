@@ -34,60 +34,57 @@ const SignUpPage = () => {
   }, []);
 
   const handleInputChange = (e) => {
-    console.log('Field name:', e.target.name);
-    console.log('Field value:', e.target.value);
     setUserData({ ...userData, [e.target.name]: e.target.value });
+  };
+
+  const handleLogin = (email, password) => {
+    axios.post('http://127.0.0.1:8000/api/auth/login', { email, password })
+      .then(response => {
+        const { access, refresh } = response.data;
+        localStorage.setItem('accessToken', access);
+        localStorage.setItem('refreshToken', refresh);
+        navigate('/homepage'); // Перенаправление на страницу пользователя
+      })
+      .catch(error => {
+        toast.error("Ошибка при входе");
+        console.error("Ошибка входа:", error);
+      });
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-  
-    // Формируем объект данных для отправки
     const requestData = {
-      student_name: `${userData.surname} ${userData.name} ${userData.patronymic}`,
+      full_name: `${userData.surname} ${userData.name} ${userData.patronymic}`,
       email: userData.email,
       password: userData.password,
       course: Number(userData.course),
+
       direction: Number(userData.direction), 
     };
-    console.log(requestData)
-  
-    // Отправляем POST-запрос
+
     axios.post('http://127.0.0.1:8000/api/registration/', requestData)
       .then(response => {
-        if (response.status === 201) { 
+        if (response.status === 201) {
           toast.success("Регистрация прошла успешно!");
-          navigate('/welcomepage');
+          handleLogin(userData.email, userData.password);
         } else {
           toast.error(response.data.message || "Ошибка регистрации");
         }
       })
       .catch(error => {
-        if (error.response) {
-          let errorMessage = "Произошла ошибка при регистрации!";
-          if (error.response.data && error.response.data.email) {
-            // Предполагаем, что сообщение об ошибке находится в error.response.data.email
-            errorMessage = error.response.data.email.join(' '); // Если есть несколько сообщений, объединяем их
-          }
-          toast.error(errorMessage);
-          console.error("Ошибка регистрации:", error.response);
-        } else if (error.request) {
-          console.error("Ошибка регистрации: Нет ответа от сервера");
-          toast.error("Нет ответа от сервера");
-        } else {
-          console.error("Ошибка регистрации:", error.message);
-          toast.error("Ошибка при отправке запроса");
+        let errorMessage = "Произошла ошибка при регистрации!";
+        if (error.response && error.response.data && error.response.data.email) {
+          errorMessage = error.response.data.email.join(' ');
         }
+        toast.error(errorMessage);
+        console.error("Ошибка регистрации:", error);
       });
   };
 
-
-
   return (
     <div className="flex justify-center min-h-screen">
-         <ToastContainer />
+      <ToastContainer />
       <div className="w-full max-w-[1300px] ">
-
         <main className="mt-[10%] w-full h-[100vh] ">
           <form className="max-w-[400px] mx-auto p-5 shadow-xl rounded-xl " onSubmit={handleSubmit}>
 
