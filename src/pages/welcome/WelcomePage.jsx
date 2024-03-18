@@ -43,14 +43,14 @@ const WelcomePage = () => {
                 </div>
               </div>
               <div className="flex flex-col gap-2 pt-6 w-full md:w-1/2  ">
-                <a href="/projects/" className="no-underline text-center text-3xl px-6 py-3 bg-[#fc9af7] dark:bg-[#d66bd1] hover:bg-[#d66bd1] dark:hover:bg-[#fc9af7] text-customGray dark:text-trueWhite hover:text-trueWhite dark:hover:text-customGray font-semibold rounded-md transition duration-300">
+                <a href="/Projects/" className="no-underline text-center text-3xl px-6 py-3 bg-[#fc9af7] dark:bg-[#d66bd1] hover:bg-[#d66bd1] dark:hover:bg-[#fc9af7] text-customGray dark:text-trueWhite hover:text-trueWhite dark:hover:text-customGray font-semibold rounded-md transition duration-300">
                   Каталог
                 </a>
 
 
                 {isAuthenticated && role === 'STUDENT' && (
                    <div className="flex justify-between items-center gap-2">
-                    <a href="/SignUp" className="flex-grow no-underline text-center text-xl sm:text-[20px] md:text-[20px] px-6 py-3 bg-[#89abfc] dark:bg-[#4b6cb7] hover:bg-[#4b6cb7] dark:hover:bg-[#89abfc] text-customGray dark:text-trueWhite hover:text-trueWhite dark:hover:text-customGray font-semibold rounded-md transition duration-300">
+                    <a href="/Join-project" className="flex-grow no-underline text-center text-xl sm:text-[20px] md:text-[20px] px-6 py-3 bg-[#89abfc] dark:bg-[#4b6cb7] hover:bg-[#4b6cb7] dark:hover:bg-[#89abfc] text-customGray dark:text-trueWhite hover:text-trueWhite dark:hover:text-customGray font-semibold rounded-md transition duration-300">
                       Вступить в проект
                     </a>
                     <a href="/Login" className=" flex-grow no-underline text-center  text-xl sm:text-[20px] md:text-[20px] px-6 py-3 bg-[#89abfc] dark:bg-[#4b6cb7] hover:bg-[#4b6cb7] dark:hover:bg-[#89abfc] text-customGray dark:text-trueWhite hover:text-trueWhite dark:hover:text-customGray font-semibold rounded-md transition duration-300">
