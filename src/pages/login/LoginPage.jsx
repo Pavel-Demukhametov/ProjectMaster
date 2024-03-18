@@ -25,7 +25,7 @@ const LoginPage = () => {
         localStorage.setItem('refreshToken', refresh);
         localStorage.setItem('userRole', role);
         toast.success("Вход выполнен успешно!");
-        navigate('/welcomepage');
+        navigate('/');
       })
       .catch(error => {
         toast.error("Произошла ошибка при входе!");

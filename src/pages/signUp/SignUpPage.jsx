@@ -44,7 +44,7 @@ const SignUpPage = () => {
         localStorage.setItem('accessToken', access);
         localStorage.setItem('refreshToken', refresh);
         localStorage.setItem('userRole', role); // Добавлено сохранение роли
-        navigate('/homepage'); // Перенаправление на страницу пользователя
+        navigate('/'); // Перенаправление на страницу пользователя
       })
       .catch(error => {
         toast.error("Ошибка при входе");
