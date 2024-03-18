@@ -3,12 +3,12 @@ import axios from 'axios';
 import InputField from '../../components/inputField/InputField';
 import Dropdown from '../../components/dropDown/DropDown';
 import SimpleTag from '../../components/tag/Tag';
+import MultiSelectDropdown from '../../components/dropDown/MultiSelectDropDown';
 
 const CreateProjectPage = () => {
   const [projectData, setProjectData] = useState({
     title: '',
     description: '',
-    students: [],
     curators: [],
     roles: []
   });
@@ -27,10 +27,10 @@ const CreateProjectPage = () => {
       .catch(error => console.error('Ошибка при загрузке данных:', error));
   }, []);
 
-  const handleRemoveTag = (field, id) => {
+  const handleRemoveTag = (field, index) => {
     setProjectData(prevState => ({
       ...prevState,
-      [field]: prevState[field].filter(itemId => itemId !== id)
+      [field]: prevState[field].filter((_, i) => i !== index)
     }));
   };
 
@@ -82,7 +82,18 @@ const CreateProjectPage = () => {
             );
           })}
         </div> */}
-
+      <InputField 
+        label="Максимальное количество студентов:" 
+        name="max_students_count" 
+        value={projectData.max_students_count} 
+        onChange={handleInputChange} 
+      />
+      <InputField 
+        label="Минимальное количество студентов:" 
+        name="min_students_count" 
+        value={projectData.min_students_count} 
+        onChange={handleInputChange} 
+      />
         {/* Для кураторов */}
         <Dropdown
           items={allCurators.map(curator => ({ id: curator.id, label: curator.name }))}
@@ -104,28 +115,28 @@ const CreateProjectPage = () => {
             );
           })}
         </div>
-
-        {/* Для ролей */}
-        <Dropdown
+        <MultiSelectDropdown
           items={allRoles.map(role => ({ id: role.id, label: role.role_name }))}
           placeholder="Выберите роли"
           selectedItems={projectData.roles}
           onSelectionChange={selectedIds => handleSelectChange('roles', selectedIds)}
-          highlightColor="blue"
         />
+
+        {/* Display selected roles */}
         <div className="flex flex-wrap gap-2">
-          {projectData.roles.map(roleId => {
-            const role = allRoles.find(r => r.id === roleId);
-            return role && (
-              <SimpleTag
-                key={roleId}
-                tagName={role.role_name}
-                color="blue"
-                onRemove={() => handleRemoveTag('roles', roleId)}
-              />
-            );
-          })}
-        </div>
+  {projectData.roles.map((roleId, index) => {
+    const role = allRoles.find(r => r.id === roleId);
+    return role && (
+      <SimpleTag
+        key={index}
+        tagName={role.role_name}
+        color="blue"
+        onRemove={() => handleRemoveTag('roles', index)}
+      />
+    );
+  })}
+</div>
+       
 
         <button type="submit" className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">Создать проект</button>
       </form>
