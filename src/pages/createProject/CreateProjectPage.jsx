@@ -6,9 +6,12 @@ import SimpleTag from '../../components/tag/Tag';
 import MultiSelectDropdown from '../../components/dropDown/MultiSelectDropDown';
 
 const CreateProjectPage = () => {
+  const accessToken = localStorage.getItem('accessToken');
+  const refreshToken = localStorage.getItem('refreshToken');
   const [projectData, setProjectData] = useState({
-    title: '',
+    project_name: '',
     description: '',
+    students: [],
     curators: [],
     roles: []
   });
@@ -27,13 +30,19 @@ const CreateProjectPage = () => {
       .catch(error => console.error('Ошибка при загрузке данных:', error));
   }, []);
 
-  const handleRemoveTag = (field, index) => {
+  const handleRemoveЬMultyTag = (field, index) => {
     setProjectData(prevState => ({
       ...prevState,
       [field]: prevState[field].filter((_, i) => i !== index)
     }));
   };
 
+  const handleRemoveTag = (field, id) => {
+    setProjectData(prevState => ({
+      ...prevState,
+      [field]: prevState[field].filter(item => item !== id)
+    }));
+  };
   const handleInputChange = (e) => {
     setProjectData({ ...projectData, [e.target.name]: e.target.value });
   };
@@ -47,7 +56,16 @@ const CreateProjectPage = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    axios.post('http://127.0.0.1:8000/api/project-create/', projectData)
+    const accessToken = localStorage.getItem('accessToken');
+    const refreshToken = localStorage.getItem('refreshToken');
+    const config = {
+      headers: {
+        'Authorization': `Bearer ${accessToken}`,
+        'Refresh-Token': refreshToken
+      }
+    };
+
+    axios.post('http://127.0.0.1:8000/api/project-create/', projectData, config)
       .then(response => {
         console.log('Успешно отправлено:', response.data);
         // Дополнительная логика после отправки
@@ -58,7 +76,7 @@ const CreateProjectPage = () => {
   return (
     <div className="p-4 bg-white dark:bg-gray-800">
       <form onSubmit={handleSubmit} className="space-y-4">
-        <InputField label="Название проекта:" name="title" value={projectData.title} onChange={handleInputChange} />
+        <InputField label="Название проекта:" name="project_name" value={projectData.project_name} onChange={handleInputChange} />
         <InputField label="Описание проекта:" name="description" value={projectData.description} onChange={handleInputChange} />
 
         {/* Для студентов
@@ -96,7 +114,7 @@ const CreateProjectPage = () => {
       />
         {/* Для кураторов */}
         <Dropdown
-          items={allCurators.map(curator => ({ id: curator.id, label: curator.name }))}
+          items={allCurators.map(curator => ({ id: curator.id, label: curator.full_name }))}
           placeholder="Выберите кураторов"
           selectedItems={projectData.curators}
           onSelectionChange={selectedIds => handleSelectChange('curators', selectedIds)}
@@ -108,7 +126,7 @@ const CreateProjectPage = () => {
             return curator && (
               <SimpleTag
                 key={curatorId}
-                tagName={curator.name}
+                tagName={curator.full_name}
                 color="blue"
                 onRemove={() => handleRemoveTag('curators', curatorId)}
               />
@@ -131,7 +149,7 @@ const CreateProjectPage = () => {
         key={index}
         tagName={role.role_name}
         color="blue"
-        onRemove={() => handleRemoveTag('roles', index)}
+        onRemove={() => handleRemoveЬMultyTag('roles', index)}
       />
     );
   })}
