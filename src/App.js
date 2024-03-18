@@ -7,6 +7,8 @@ import SignUpPage from './pages/signUp/SignUpPage';
 import LoginPage from './pages/login/LoginPage';
 import CreateProjectPage from './pages/createProject/CreateProjectPage';
 import StudentsCatalogPage from './pages/studentsCatalog/StudentsCatalogPage';
+import Catalog from './pages/projectCatalog/ProjectCatalogPage';
+import OpenProjectCatalog from './pages/projectCatalog/OpenProjectPage';
 
 function App() {
   return (
@@ -20,6 +22,8 @@ function App() {
               <Route path="Login/" element={<LoginPage />}/>
               <Route path="CreateProject/" element={<CreateProjectPage />}/>
               <Route path="Students/" element={<StudentsCatalogPage />}/>
+              <Route path="Projects/" element={<Catalog />}/>
+              <Route path="Join-project/" element={<OpenProjectCatalog />}/>
               <Route path="*" element={<NotFound />} />
             </Route>
           </Routes>
