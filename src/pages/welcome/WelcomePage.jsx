@@ -4,10 +4,13 @@ import './WelcomePage.css';
 import Switcher12 from '../../components/switcher/Swither';
 import Footer from '../../layout/footer/Footer';
 import GreedBackGround from '../../components/greedBackground/GreedBackground';
+import ButtonLink from '../../components/routeButton/RouteButton';
 
 
 
 const WelcomePage = () => {
+  const isAuthenticated = localStorage.getItem('accessToken');
+  const role = localStorage.getItem('userRole');
   return (
     
     <div className="">
@@ -43,14 +46,45 @@ const WelcomePage = () => {
                 <a href="/projects/" className="no-underline text-center text-3xl px-6 py-3 bg-[#fc9af7] dark:bg-[#d66bd1] hover:bg-[#d66bd1] dark:hover:bg-[#fc9af7] text-customGray dark:text-trueWhite hover:text-trueWhite dark:hover:text-customGray font-semibold rounded-md transition duration-300">
                   Каталог
                 </a>
-                <div className="flex justify-between items-center gap-2">
+
+
+                {isAuthenticated && role === 'STUDENT' && (
+                   <div className="flex justify-between items-center gap-2">
                     <a href="/SignUp" className="flex-grow no-underline text-center text-xl sm:text-[20px] md:text-[20px] px-6 py-3 bg-[#89abfc] dark:bg-[#4b6cb7] hover:bg-[#4b6cb7] dark:hover:bg-[#89abfc] text-customGray dark:text-trueWhite hover:text-trueWhite dark:hover:text-customGray font-semibold rounded-md transition duration-300">
-                        Зарегистрироваться
+                      Вступить в проект
                     </a>
                     <a href="/Login" className=" flex-grow no-underline text-center  text-xl sm:text-[20px] md:text-[20px] px-6 py-3 bg-[#89abfc] dark:bg-[#4b6cb7] hover:bg-[#4b6cb7] dark:hover:bg-[#89abfc] text-customGray dark:text-trueWhite hover:text-trueWhite dark:hover:text-customGray font-semibold rounded-md transition duration-300">
-                        Войти
+                      Мои проекты
                     </a>
-                </div>
+                 </div>
+                  )}
+
+                 {isAuthenticated && role === 'CURATOR' && (
+                   <div className="flex justify-between items-center gap-2">
+                    <a href="/Students" className="flex-grow no-underline text-center text-xl sm:text-[20px] md:text-[20px] px-6 py-3 bg-[#89abfc] dark:bg-[#4b6cb7] hover:bg-[#4b6cb7] dark:hover:bg-[#89abfc] text-customGray dark:text-trueWhite hover:text-trueWhite dark:hover:text-customGray font-semibold rounded-md transition duration-300">
+                      Список студентов
+                    </a>
+                    <a href="/CreateProject" className="flex-grow no-underline text-center text-xl sm:text-[20px] md:text-[20px] px-6 py-3 bg-[#89abfc] dark:bg-[#4b6cb7] hover:bg-[#4b6cb7] dark:hover:bg-[#89abfc] text-customGray dark:text-trueWhite hover:text-trueWhite dark:hover:text-customGray font-semibold rounded-md transition duration-300">
+                      Создать проект
+                    </a>
+                    <a href="/CreateTeam" className=" flex-grow no-underline text-center  text-xl sm:text-[20px] md:text-[20px] px-6 py-3 bg-[#89abfc] dark:bg-[#4b6cb7] hover:bg-[#4b6cb7] dark:hover:bg-[#89abfc] text-customGray dark:text-trueWhite hover:text-trueWhite dark:hover:text-customGray font-semibold rounded-md transition duration-300">
+                      Создать команды
+                    </a>
+                 </div>
+                  )}
+
+                  {!isAuthenticated && (
+                    <div className="flex justify-between items-center gap-2">
+                      <a href="/SignUp" className="flex-grow no-underline text-center text-xl sm:text-[20px] md:text-[20px] px-6 py-3 bg-[#89abfc] dark:bg-[#4b6cb7] hover:bg-[#4b6cb7] dark:hover:bg-[#89abfc] text-customGray dark:text-trueWhite hover:text-trueWhite dark:hover:text-customGray font-semibold rounded-md transition duration-300">
+                        Зарегистрироваться
+                      </a>
+                      <a href="/Login" className=" flex-grow no-underline text-center  text-xl sm:text-[20px] md:text-[20px] px-6 py-3 bg-[#89abfc] dark:bg-[#4b6cb7] hover:bg-[#4b6cb7] dark:hover:bg-[#89abfc] text-customGray dark:text-trueWhite hover:text-trueWhite dark:hover:text-customGray font-semibold rounded-md transition duration-300">
+                        Войти
+                      </a>
+                  </div>
+                  )}
+
+                  
                 
               </div>
             </div>
