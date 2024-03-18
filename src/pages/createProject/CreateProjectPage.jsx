@@ -4,8 +4,12 @@ import InputField from '../../components/inputField/InputField';
 import Dropdown from '../../components/dropDown/DropDown';
 import SimpleTag from '../../components/tag/Tag';
 import MultiSelectDropdown from '../../components/dropDown/MultiSelectDropDown';
+import SubmitButton from '../../components/submitButton/submitButton';
+
+import { useNavigate } from 'react-router-dom';
 
 const CreateProjectPage = () => {
+  const navigate = useNavigate(); 
   const accessToken = localStorage.getItem('accessToken');
   const refreshToken = localStorage.getItem('refreshToken');
   const [projectData, setProjectData] = useState({
@@ -67,8 +71,7 @@ const CreateProjectPage = () => {
 
     axios.post('http://127.0.0.1:8000/api/project-create/', projectData, config)
       .then(response => {
-        console.log('Успешно отправлено:', response.data);
-        // Дополнительная логика после отправки
+        navigate('/');
       })
       .catch(error => console.error('Ошибка при отправке данных:', error));
   };
@@ -155,8 +158,10 @@ const CreateProjectPage = () => {
   })}
 </div>
        
-
-        <button type="submit" className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">Создать проект</button>
+        <SubmitButton
+         text = "Создать проект"
+         ></SubmitButton>
+        
       </form>
     </div>
   );
