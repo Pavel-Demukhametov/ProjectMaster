@@ -32,27 +32,34 @@ const OpenProjectCatalog = () => {
     };
   
     const handleSubmit = () => {
-      console.log(interests);
+      // Перебираем все ключи в объекте interests и устанавливаем значение 0, если оно пустое
+      const updatedInterests = {};
+      Object.keys(interests).forEach(projectId => {
+        updatedInterests[projectId] = interests[projectId] === '' ? '0' : interests[projectId];
+      });
+      setInterests(updatedInterests); // Обновляем состояние с учетом изменений
+      console.log(updatedInterests);
     };
   
     return (
-    <div>
-      <div className="flex flex-wrap justify-center w-full pb-3">
-        {loading ? (
-          <MiniLoadingSpinner />
-        ) : projects.length > 0 ? (
-          projects.map((project) => (
-            <OpenCard key={project.id} {...project} onInterestChange={handleInterestChange} />
-          ))
-        ) : (
-          <p className="text-xl text-center w-full">Проекты не найдены.</p>
-        )}
+      <div>
+        <div className="flex flex-wrap justify-center w-full pb-3">
+          {loading ? (
+            <MiniLoadingSpinner />
+          ) : projects.length > 0 ? (
+            projects.map((project) => (
+              <OpenCard key={project.id} {...project} onInterestChange={handleInterestChange} />
+            ))
+          ) : (
+            <p className="text-xl text-center w-full">Проекты не найдены.</p>
+          )}
+        </div>
+        <SubmitButton
+          onClick={handleSubmit}
+          text="Отправить"
+        />
       </div>
-    <SubmitButton
-        onClick={handleSubmit}
-        text = "Отправить"
-    ></SubmitButton>
-    </div>
-  )};
+    );
+  };
   
   export default OpenProjectCatalog;
