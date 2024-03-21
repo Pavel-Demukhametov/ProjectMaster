@@ -2,6 +2,7 @@ import React from 'react';
 import Switcher12 from '../../components/switcher/Swither';
 import { Link } from 'react-router-dom';
 import "./Header.css"
+import ProfileButton from '../../components/profileButton/ProfileButton';
 
 const Header = () => {
   return (
@@ -16,7 +17,12 @@ const Header = () => {
           <span className="font-bold text-transparent bg-clip-text gradient-text">Master</span>
           </p>
         </Link> 
-          <Switcher12  />
+        <div className="flex items-center gap-7">
+            <Switcher12 />
+
+            <ProfileButton/>
+
+          </div>
         </nav>
       </div>
     </header>

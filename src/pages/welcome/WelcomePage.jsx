@@ -1,5 +1,6 @@
 // WelcomePage.jsx
 import React, { useState, useEffect } from 'react';
+import ProfileButton from '../../components/profileButton/ProfileButton';
 import './WelcomePage.css';
 import Switcher12 from '../../components/switcher/Swither';
 import Footer from '../../layout/footer/Footer';
@@ -25,8 +26,12 @@ const WelcomePage = () => {
           <header className="fixed top-0 right-0 z-10 w-full mt-4 ml-3">
             <div className="flex justify-between max-w-[1300px]  mx-auto">
               <div></div>
-              <div className="mr-[50px]">
+
+              <div className="flex items-center gap-7">
                 <Switcher12 />
+
+                <ProfileButton/>
+
               </div>
             </div>
           </header>
