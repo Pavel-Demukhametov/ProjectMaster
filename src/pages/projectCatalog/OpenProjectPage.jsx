@@ -7,7 +7,8 @@ const OpenProjectCatalog = () => {
     const [projects, setProjects] = useState([]);
     const [loading, setLoading] = useState(false);
     const [interests, setInterests] = useState({}); 
-  
+    const [showSubmitButton, setShowSubmitButton] = useState(false);
+
     useEffect(() => {
       const fetchProjects = async () => {
         setLoading(true);
@@ -17,6 +18,7 @@ const OpenProjectCatalog = () => {
           setProjects(data);
           const initialInterests = data.reduce((acc, project) => ({ ...acc, [project.id]: '' }), {});
           setInterests(initialInterests);
+          setShowSubmitButton(data.length > 0); // Определяем, есть ли проекты на странице
         } catch (error) {
           console.error('Error fetching projects:', error);
         } finally {
@@ -45,13 +47,15 @@ const OpenProjectCatalog = () => {
             <OpenCard key={project.id} {...project} onInterestChange={handleInterestChange} />
           ))
         ) : (
-          <p className="text-xl text-center w-full">Проекты не найдены.</p>
+          <p className="text-xl text-center w-full dark:text-trueWhite">Проекты не найдены.</p>
         )}
       </div>
-    <SubmitButton
-        onClick={handleSubmit}
-        text = "Отправить"
-    ></SubmitButton>
+      {showSubmitButton && (
+        <SubmitButton
+          onClick={handleSubmit}
+          text="Отправить"
+        />
+      )}
     </div>
   )};
   
