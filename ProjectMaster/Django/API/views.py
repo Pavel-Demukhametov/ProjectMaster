@@ -217,7 +217,7 @@ class UserProjectsAPIView(generics.ListAPIView):
         # Проверяем его роль
         if user.role == 'STUDENT':
             user_active_projects = Project.objects.filter(
-                projectstudent__student__user=my_user,
+                projectstudent__student__user=user,
                 projectstudent__participation=True
             )
             # Если пользователь студент, получаем проекты, в которых он задействован
