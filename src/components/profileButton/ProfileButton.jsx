@@ -1,32 +1,48 @@
-
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-const ProfileButton = () => {
+import { useNavigate, useLocation } from 'react-router-dom';
+
+const ProfileButton = ({ buttonColor }) => {
   const navigate = useNavigate();
-  const [isDarkMode, setIsDarkMode] = useState(false);
+  const location = useLocation();
+  const [isDarkMode, setIsDarkMode] = useState(localStorage.getItem('darkMode') === 'true');
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const accessToken = localStorage.getItem('accessToken');
 
   useEffect(() => {
-    const accessToken = localStorage.getItem('accessToken');
-    setIsDarkMode(accessToken !== null);
+    setIsDarkMode(localStorage.getItem('darkMode') === 'true');
   }, []);
+
+  useEffect(() => {
+    setIsDropdownOpen(false);
+  }, [location.pathname]); // Close dropdown when location changes
 
   const handleDropdownToggle = () => {
     setIsDropdownOpen(!isDropdownOpen);
   };
 
   const handleLogout = () => {
-
     localStorage.removeItem('accessToken');
     localStorage.removeItem('refreshToken');
-    setIsDarkMode(false); 
-    setIsDropdownOpen(false); 
-    navigate('/'); 
+    setIsDarkMode(false);
+    setIsDropdownOpen(false);
+    if (location.pathname === '/') {
+      window.location.reload(); // обновляем страницу, если пользователь на главной
+    } else {
+      navigate('/');
+    }
+  };
+
+  const handleLogin = () => {
+    navigate('/Login');
+  };
+
+  const handleRegistration = () => {
+    navigate('/SignUp');
   };
 
   return (
     <div className="relative ml-4">
-      <button className="text-gray-800 dark:text-white" onClick={handleDropdownToggle}>
+      <button className={`text-gray-800 ${isDarkMode ? 'dark:text-white' : ''}`} onClick={handleDropdownToggle}>
         <img
           src="profile2.png"
           alt="Профиль"
@@ -36,9 +52,20 @@ const ProfileButton = () => {
       </button>
       {isDropdownOpen && (
         <div className="absolute right-0 mt-2 w-48 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-600 shadow-lg rounded-lg">
-          <button className="block w-full py-2 px-4 text-gray-800 dark:text-white text-left hover:bg-gray-100 dark:hover:bg-gray-700" onClick={handleLogout}>
-            Выйти
-          </button>
+          {accessToken ? (
+            <button className={`block w-full py-2 px-4 ${buttonColor}`} onClick={handleLogout}>
+              Выйти
+            </button>
+          ) : (
+            <>
+              <button className={`block w-full py-2 px-4 ${buttonColor}`} onClick={handleLogin}>
+                Войти
+              </button>
+              <button className={`block w-full py-2 px-4 ${buttonColor}`} onClick={handleRegistration}>
+                Зарегистрироваться
+              </button>
+            </>
+          )}
         </div>
       )}
     </div>
