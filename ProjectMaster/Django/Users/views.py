@@ -4,7 +4,7 @@ from rest_framework.views import APIView
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from .models import User
-from API.serializers import UserSerializer, StudentSerializer, SupervisorSerializer
+from API.serializers import UserSerializer
 
 
 class CustomUserAuthentication(APIView):

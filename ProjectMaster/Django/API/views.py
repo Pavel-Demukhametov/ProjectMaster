@@ -1,7 +1,7 @@
 from django.shortcuts import get_object_or_404
-from rest_framework import mixins, status
+from rest_framework import mixins, status, generics, permissions
 from rest_framework.viewsets import GenericViewSet
-from .serializers import StudentSerializer, SupervisorSerializer, \
+from .serializers import StudentSerializerGet, StudentSerializerPost, SupervisorSerializer, \
     DirectionSerializer, CourseSerializer, ProjectSerializer, \
     RolesSerializer, ProjectStatusSerializer, UserSerializer
 from Users.models import User, Student, Supervisor, Direction, Course, Roles
@@ -39,7 +39,7 @@ class StudentViewSet(mixins.CreateModelMixin,
                      mixins.ListModelMixin,
                      GenericViewSet):
     """ Отображение студентов для API и работа с ними """
-    serializer_class = StudentSerializer
+    serializer_class = StudentSerializerGet
 
     def get_queryset(self):
         pk = self.kwargs.get("pk")
@@ -121,7 +121,7 @@ class RegisterStudentView(APIView):
         data = request.data.copy()
         data['user'] = user.id  # Добавляем id пользователя в данные студента
 
-        student_serializer = StudentSerializer(data=data)
+        student_serializer = StudentSerializerPost(data=data)
         if not student_serializer.is_valid():
             user.delete()  # Удаляем пользователя, если данные студента неверны
             return Response(student_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
@@ -143,7 +143,7 @@ class CreateProjectView(APIView):
         roles = Roles.objects.all()
         statuses = ProjectStatus.objects.all()
 
-        students_serializer = StudentSerializer(students, many=True)
+        students_serializer = StudentSerializerGet(students, many=True)
         supervisors_serializer = SupervisorSerializer(supervisors, many=True)
         roles_serializer = RolesSerializer(roles, many=True)
         statuses_serializer = ProjectStatusSerializer(statuses, many=True)
@@ -191,7 +191,7 @@ class CreateProjectView(APIView):
         # Создаем объекты ProjectStudent для студентов (если список не пуст)
         if students_ids:
             for student_id in students_ids:
-                ProjectStudent.objects.create(project=project, student_id=student_id)
+                ProjectStudent.objects.create(project=project, student_id=student_id, participation=True)
 
         # Создаем объекты ProjectSupervisor для кураторов (если список не пуст)
         if supervisors_ids:
@@ -204,3 +204,77 @@ class CreateProjectView(APIView):
                 ProjectRole.objects.create(project=project, role_id=role_id)
 
         return Response(ProjectSerializer(project).data, status=status.HTTP_201_CREATED)
+
+
+class UserProjectsAPIView(generics.ListAPIView):
+    serializer_class = ProjectSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get_queryset(self):
+        # Получаем текущего пользователя
+        user = self.request.user
+
+        # Проверяем его роль
+        if user.role == 'STUDENT':
+            # Если пользователь студент, получаем проекты, в которых он задействован
+            return Project.objects.filter(projectstudent__student__user=user)
+        elif user.role == 'SUPERVISOR':
+            # Если пользователь куратор, получаем проекты, в которых он является руководителем
+            return Project.objects.filter(projectsupervisor__supervisor__user=user)
+        else:
+            # Если пользователь имеет другую роль, возвращаем пустой QuerySet
+            return Project.objects.none()
+
+    def list(self, request, *args, **kwargs):
+        queryset = self.get_queryset()
+        serializer = self.get_serializer(queryset, many=True)
+        return Response(serializer.data)
+
+
+class JoinProjectAPIView(generics.GenericAPIView):
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get(self, request, *args, **kwargs):
+        # Проверяем, является ли пользователь студентом
+        if request.user.role != 'STUDENT':
+            return Response({'error': 'Access denied'}, status=403)
+
+        # Получаем проекты с определенным статусом
+        projects = Project.objects.filter(status__id=1)
+        serializer = ProjectSerializer(projects, many=True)
+        return Response(serializer.data)
+
+    def post(self, request, *args, **kwargs):
+        # Проверяем, является ли пользователь студентом
+        if request.user.role != 'STUDENT':
+            return Response({'error': 'Access denied'}, status=403)
+
+        # Получаем данные из запроса
+        data = request.data
+
+        # Проверяем, есть ли данные в правильном формате
+        if not isinstance(data, dict):
+            return Response({'error': 'Invalid data format'}, status=400)
+
+        # Получаем объекты ProjectStudent
+        errors = {}
+        for project_id, interest in data.items():
+            try:
+                project = Project.objects.get(pk=project_id)
+                student = request.user.student
+
+                # Проверяем интерес на соответствие диапазону от 0 до 5
+                if not (0 <= int(interest) <= 5):
+                    errors[project_id] = 'Interest must be between 0 and 5'
+                    continue
+
+                project_student, created = ProjectStudent.objects.get_or_create(project=project, student=student)
+                project_student.interest = int(interest)
+                project_student.save()
+            except Project.DoesNotExist:
+                errors[project_id] = 'Project does not exist'
+
+        if errors:
+            return Response({'errors': errors}, status=400)
+        else:
+            return Response({'success': True})

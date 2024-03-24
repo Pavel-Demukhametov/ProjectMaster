@@ -92,7 +92,12 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Supervisor',
             fields=[
-                ('user', models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, primary_key=True, serialize=False, to=settings.AUTH_USER_MODEL, verbose_name='Пользователь')),
+                ('id',
+                 models.BigAutoField(auto_created=True, default=1, primary_key=True, serialize=False,
+                                     verbose_name='ID')),
+                ('user',
+                 models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, primary_key=False, serialize=False,
+                                      to=settings.AUTH_USER_MODEL, verbose_name='Пользователь')),
                 ('job', models.CharField(blank=True, max_length=255, verbose_name='Место работы')),
             ],
             options={

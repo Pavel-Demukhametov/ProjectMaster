@@ -57,6 +57,7 @@ class ProjectStudent(models.Model):
         null=True,
         blank=True
     )
+    participation = models.BooleanField(default=False)
 
 
 class ProjectRole(models.Model):

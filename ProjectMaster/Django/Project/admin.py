@@ -12,7 +12,7 @@ class ProjectAdmin(admin.ModelAdmin):
 
 @admin.register(ProjectStudent)
 class ProjectStudentAdmin(admin.ModelAdmin):
-    list_display = ('project', 'student')
+    list_display = ('project', 'student', 'interest', 'participation')
 
 
 @admin.register(ProjectSupervisor)
