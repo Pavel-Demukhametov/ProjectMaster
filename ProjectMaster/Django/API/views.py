@@ -216,8 +216,12 @@ class UserProjectsAPIView(generics.ListAPIView):
 
         # Проверяем его роль
         if user.role == 'STUDENT':
+            user_active_projects = Project.objects.filter(
+                projectstudent__student__user=my_user,
+                projectstudent__participation=True
+            )
             # Если пользователь студент, получаем проекты, в которых он задействован
-            return Project.objects.filter(projectstudent__student__user=user)
+            return user_active_projects
         elif user.role == 'SUPERVISOR':
             # Если пользователь куратор, получаем проекты, в которых он является руководителем
             return Project.objects.filter(projectsupervisor__supervisor__user=user)
@@ -241,6 +245,8 @@ class JoinProjectAPIView(generics.GenericAPIView):
 
         # Получаем проекты с определенным статусом
         projects = Project.objects.filter(status__id=1)
+        print(projects)
+        print(1)
         serializer = ProjectSerializer(projects, many=True)
         return Response(serializer.data)
 
