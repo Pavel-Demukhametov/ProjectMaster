@@ -19,18 +19,19 @@ const LoginPage = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     axios.post('http://127.0.0.1:8000/api/auth/login', loginData)
-      .then(response => {
-        const { access, refresh, role = 'STUDENT' } = response.data;
-        localStorage.setItem('accessToken', access);
-        localStorage.setItem('refreshToken', refresh);
-        localStorage.setItem('userRole', role);
-        toast.success("Вход выполнен успешно!");
-        navigate('/');
-      })
-      .catch(error => {
-        toast.error("Произошла ошибка при входе!");
-        console.error("Ошибка входа:", error);
-      });
+    .then(response => {
+      const { access, refresh, user } = response.data; // Извлекаем user вместе с access и refresh
+      const { role } = user; // Теперь извлекаем role из user
+      localStorage.setItem('accessToken', access);
+      localStorage.setItem('refreshToken', refresh);
+      localStorage.setItem('userRole', role); // И сохраняем роль в localStorage
+      toast.success("Вход выполнен успешно!");
+      navigate('/');
+    })
+    .catch(error => {
+      toast.error("Произошла ошибка при входе!");
+      console.error("Ошибка входа:", error);
+    });
   };
 
   return (

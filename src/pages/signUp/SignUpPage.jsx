@@ -40,11 +40,12 @@ const SignUpPage = () => {
   const handleLogin = (email, password) => {
     axios.post('http://127.0.0.1:8000/api/auth/login', { email, password })
       .then(response => {
-        const { access, refresh, role = 'STUDENT' } = response.data;
+        const { access, refresh, user } = response.data;
+        const { role } = user;
         localStorage.setItem('accessToken', access);
         localStorage.setItem('refreshToken', refresh);
-        localStorage.setItem('userRole', role); // Добавлено сохранение роли
-        navigate('/'); // Перенаправление на страницу пользователя
+        localStorage.setItem('userRole', role); 
+        navigate('/'); 
       })
       .catch(error => {
         toast.error("Ошибка при входе");

@@ -9,6 +9,7 @@ import CreateProjectPage from './pages/createProject/CreateProjectPage';
 import StudentsCatalogPage from './pages/studentsCatalog/StudentsCatalogPage';
 import Catalog from './pages/projectCatalog/ProjectCatalogPage';
 import OpenProjectCatalog from './pages/projectCatalog/OpenProjectPage';
+import MyProjects from './pages/projectCatalog/MyProjects';
 
 // Функция проверки аутентификации и роли
 const requireAuthAndRole = (component, role) => {
@@ -34,12 +35,14 @@ function App() {
             <Route path="SignUp/" element={<SignUpPage />} />
             <Route path="Login/" element={<LoginPage />} />
 
-            <Route path="CreateProject/" element={requireAuthAndRole(<CreateProjectPage />, 'CURATOR')} />
+            <Route path="CreateProject/" element={requireAuthAndRole(<CreateProjectPage />, 'SUPERVISOR')} />
 
-            <Route path="Students/" element={requireAuthAndRole(<StudentsCatalogPage />, 'CURATOR')} />
+            <Route path="Students/" element={requireAuthAndRole(<StudentsCatalogPage />, 'SUPERVISOR')} />
 
             <Route path="Join-project/" element={requireAuthAndRole(<OpenProjectCatalog />, 'STUDENT')} />
+            
             <Route path="Projects/" element={<Catalog />} />
+            <Route path="MyProjects/" element={<MyProjects />} />
             <Route path="*" element={<NotFound />} />
           </Route>
         </Routes>

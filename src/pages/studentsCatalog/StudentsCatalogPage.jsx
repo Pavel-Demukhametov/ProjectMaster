@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import StudentCard from './StudentCard';
+import SubmitButton from '../../components/submitButton/submitButton';
 
 const StudentsCatalogPage = () => {
   const [students, setStudents] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
-
+  const [studentRoles, setStudentRoles] = useState({}); 
   // Тестовые данные
   const testStudents = [
     { id: 1, name: 'Иван Иванов', course: 'Информатика' },
@@ -20,46 +21,55 @@ const StudentsCatalogPage = () => {
     { id: 3, label: 'Аналитик' }
     // Дополнительные роли...
   ];
+  const handleRolesChange = (studentId, roles) => {
+    setStudentRoles(prev => ({ ...prev, [studentId]: roles }));
+};
+
+const handleSubmit = () => {
+    console.log("Отправка данных студентов и их ролей на сервер:", studentRoles);
+    // Здесь код для отправки studentRoles на сервер...
+};
 
   useEffect(() => {
     const fetchStudents = async () => {
       setIsLoading(true);
       setError(null);
-
+  
       try {
         const response = await fetch('http://127.0.0.1:8000/api/students/');
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
         const data = await response.json();
-        if (data.length === 0) {
-          setStudents(testStudents);
-        } else {
-          setStudents(data);
-        }
+        setStudents(data); // Непосредственно установка полученных данных без условий на тестовые данные
       } catch (error) {
         setError(error.message);
-        setStudents(testStudents); // Использование тестовых данных при ошибке
       } finally {
         setIsLoading(false);
       }
     };
-
+  
     fetchStudents();
   }, []);
 
   return (
     <div className="p-4 bg-white dark:bg-gray-800">
-      <h1 className="text-xl font-semibold mb-4 dark:text-trueWhite">Каталог студентов</h1>
-      {isLoading && <p>Loading...</p>}
-      {error && <p>Error: {error}</p>}
-      <div className="grid grid-cols-1 gap-4">
+        {/* Остальной код UI */}
+        <div className="flex flex-col gap-2">
         {students.map(student => (
-          <StudentCard key={student.id} student={student} roles={roles} />
+            <StudentCard 
+              key={student.id} 
+              student={student} 
+              roles={roles} 
+              onRolesChange={handleRolesChange} // Передаем функцию как проп
+            />
         ))}
-      </div>
+        </div>
+        <div className="mt-4">
+            <SubmitButton text="Отправить данные" onClick={handleSubmit} />
+        </div>
     </div>
-  );
+);
 };
 
 export default StudentsCatalogPage;
